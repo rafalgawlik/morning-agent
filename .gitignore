@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# Agent runtime logs
+logs/*.log
+
+# macOS
+.DS_Store
+
+# Local configuration & secrets (API keys!) — never commit
+config.json
+state.json
+.env
+.env.*
+*.key
+secrets*

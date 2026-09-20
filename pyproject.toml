@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "morning-agent"
+version = "1.0.0"
+description = "macOS menu bar app that emails you a morning briefing (OpenRouter + Resend)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Rafał Gawlik" }]
+keywords = ["macos", "menubar", "email", "openrouter", "resend", "briefing"]
+dependencies = [
+    "rumps>=0.4.0",
+    "requests>=2.31.0",
+    "pyobjc-framework-WebKit>=9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/rafalgawlik/morning-agent"
+Repository = "https://github.com/rafalgawlik/morning-agent"
+Author = "https://rafalgawlik.com"
+
+[project.scripts]
+morning-agent = "morning_agent.app:main"
+
+[tool.setuptools]
+packages = ["morning_agent"]
+
+[tool.setuptools.package-data]
+morning_agent = ["assets/*.png"]
