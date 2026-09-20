@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LaunchAgent template for auto-start when installing FROM SOURCE.
+  If you installed via Homebrew, use instead:  brew services start morning-agent
+
+  Before using it, replace the PATH below with the folder where you keep the
+  project, then:
+      cp com.morning-agent.plist ~/Library/LaunchAgents/
+      launchctl load ~/Library/LaunchAgents/com.morning-agent.plist
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.morning-agent</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>/PATH/TO/morning-agent/run.sh</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/PATH/TO/morning-agent/logs/app.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/PATH/TO/morning-agent/logs/app.err.log</string>
+</dict>
+</plist>
