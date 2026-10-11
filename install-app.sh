@@ -32,10 +32,22 @@ fi
 "$ROOT/.venv/bin/pip" show py2app >/dev/null 2>&1 || "$ROOT/.venv/bin/pip" install -q py2app
 ok "Environment ready"
 
+# icns with macOS-style transparent margin (so the Dock icon is not oversized)
+"$ROOT/.venv/bin/pip" show pillow >/dev/null 2>&1 || "$ROOT/.venv/bin/pip" install -q pillow
 TMP=$(mktemp -d); ISET="$TMP/i.iconset"; mkdir -p "$ISET"
+PAD="$TMP/padded.png"
+"$ROOT/.venv/bin/python" - "$ICON_PNG" "$PAD" <<'PY' 2>/dev/null || cp "$ICON_PNG" "$PAD"
+import sys
+from PIL import Image
+src = Image.open(sys.argv[1]).convert("RGBA")
+S = 1024; t = int(S * 0.80)
+canvas = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+canvas.alpha_composite(src.resize((t, t), Image.LANCZOS), ((S - t) // 2, (S - t) // 2))
+canvas.save(sys.argv[2])
+PY
 for s in 16 32 128 256 512; do
-    sips -z "$s" "$s"             "$ICON_PNG" --out "$ISET/icon_${s}x${s}.png"    >/dev/null 2>&1
-    sips -z "$((s*2))" "$((s*2))" "$ICON_PNG" --out "$ISET/icon_${s}x${s}@2x.png" >/dev/null 2>&1
+    sips -z "$s" "$s"             "$PAD" --out "$ISET/icon_${s}x${s}.png"    >/dev/null 2>&1
+    sips -z "$((s*2))" "$((s*2))" "$PAD" --out "$ISET/icon_${s}x${s}@2x.png" >/dev/null 2>&1
 done
 iconutil -c icns "$ISET" -o "$ROOT/morning_agent/assets/app_icon.icns" 2>/dev/null
 rm -rf "$TMP"
