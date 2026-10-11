@@ -89,7 +89,6 @@ class MorningAgentApp(rumps.App):
         global _APP_INSTANCE
         _APP_INSTANCE = self
         _set_app_name()
-        self._set_dock_icon()
         config.ensure_config_file()
         self.cfg = config.load_config()
         self._sending = False
@@ -149,16 +148,6 @@ class MorningAgentApp(rumps.App):
     def _anim_tick(self, _timer) -> None:
         self.icon = SPIN_FRAMES[self._anim_i % len(SPIN_FRAMES)]
         self._anim_i += 1
-
-    def _set_dock_icon(self) -> None:
-        """Replace the generic Python icon in the Dock / Cmd-Tab with the sun."""
-        try:
-            from AppKit import NSApplication, NSImage
-            if os.path.exists(APP_ICON_PATH):
-                img = NSImage.alloc().initByReferencingFile_(APP_ICON_PATH)
-                NSApplication.sharedApplication().setApplicationIconImage_(img)
-        except Exception:
-            pass
 
     def _notify(self, title: str, message: str) -> None:
         # Use osascript — it shows reliably even when we're not packaged as an .app
