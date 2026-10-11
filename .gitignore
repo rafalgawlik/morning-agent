@@ -20,3 +20,4 @@ state.json
 .env.*
 *.key
 secrets*
+morning_agent/assets/app_icon.icns
