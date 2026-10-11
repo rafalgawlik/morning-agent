@@ -150,14 +150,10 @@ class MorningAgentApp(rumps.App):
         self._anim_i += 1
 
     def _notify(self, title: str, message: str) -> None:
-        # Use osascript — it shows reliably even when we're not packaged as an .app
-        # (rumps' NSUserNotification is often silently dropped without a bundle id).
-        def esc(s: str) -> str:
-            return (s or "").replace("\\", "\\\\").replace('"', '\\"')
-        script = (f'display notification "{esc(message)}" '
-                  f'with title "{esc(title)}" subtitle "Morning Agent"')
+        # Native rumps notification → shows the app's own icon (from the .app
+        # bundle). osascript would attribute it to Script Editor (wrong icon).
         try:
-            subprocess.run(["osascript", "-e", script], check=False)
+            rumps.notification(title, "", message)
         except Exception:
             pass
 
