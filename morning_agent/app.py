@@ -118,6 +118,9 @@ class MorningAgentApp(rumps.App):
 
         self._refresh_status()
 
+        from . import notifications
+        notifications.setup()                      # ask for notification permission
+
         # Timer that checks the schedule every 30 seconds.
         self.timer = rumps.Timer(self.tick, 30)
         self.timer.start()
@@ -150,12 +153,8 @@ class MorningAgentApp(rumps.App):
         self._anim_i += 1
 
     def _notify(self, title: str, message: str) -> None:
-        # Native rumps notification → shows the app's own icon (from the .app
-        # bundle). osascript would attribute it to Script Editor (wrong icon).
-        try:
-            rumps.notification(title, "", message)
-        except Exception:
-            pass
+        from . import notifications
+        notifications.notify(title, message)
 
     def _refresh_status(self) -> None:
         auto = "ON" if self.cfg.get("autosend") else "OFF"
